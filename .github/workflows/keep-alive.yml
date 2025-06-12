@@ -1,0 +1,21 @@
+name: Keep Render API Alive
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Every 5 minutes
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+jobs:
+  keep-alive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send ping to Render API /health (1st attempt)
+        run: |
+          curl -m 10 --retry 2 --retry-delay 5 --fail https://mockapi-m1y5.onrender.com/health || echo "Ping failed (1st attempt)"
+          
+      - name: Wait 30 seconds
+        run: sleep 30
+          
+      - name: Send ping to Render API /health (2nd attempt)
+        run: |
+          curl -m 10 --retry 2 --retry-delay 5 --fail https://mockapi-m1y5.onrender.com/health || echo "Ping failed (2nd attempt)"
