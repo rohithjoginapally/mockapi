@@ -54,6 +54,17 @@ app.delete('/records/:id', async (req, res) => {
   res.json({ message: 'Deleted' });
 });
 
+// Root route
+app.get('/', (req, res) => {
+  res.send('Mock API with MongoDB (no schema) is running. Use /records endpoint.');
+});
+
+// Health check route (add this 👇)
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
+
+
 // Start server
 app.listen(3000, () => {
   console.log('Mock API with MongoDB (no schema) running on http://localhost:3000');
