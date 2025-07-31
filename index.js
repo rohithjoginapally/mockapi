@@ -13,57 +13,51 @@ mongoose.connect('mongodb+srv://joginapallyr:VbCCgTQDOYvKDavc@mockapi.tbaugng.mo
 });
 
 // Define loose schema — allow any fields
-const recordSchema = new mongoose.Schema({}, { strict: false });
-const Record = mongoose.model('Record', recordSchema);
+const crawlSchema = new mongoose.Schema({}, { strict: false });
+const New_UpdatedCrawl = mongoose.model('New_UpdatedCrawl', crawlSchema);
 
 // Root route
 app.get('/', (req, res) => {
-  res.send('Mock API with MongoDB (no schema) is running. Use /records endpoint.');
+  res.send('Mock API with MongoDB (no schema) is running. Use /New_UpdatedCrawl endpoint.');
 });
 
 // Create record
-app.post('/records', async (req, res) => {
-  const record = new Record(req.body);
+app.post('/New_UpdatedCrawl', async (req, res) => {
+  const record = new New_UpdatedCrawl(req.body);
   await record.save();
   res.json(record);
 });
 
 // Get all records
-app.get('/records', async (req, res) => {
-  const records = await Record.find();
+app.get('/New_UpdatedCrawl', async (req, res) => {
+  const records = await New_UpdatedCrawl.find();
   res.json(records);
 });
 
 // Get single record
-app.get('/records/:id', async (req, res) => {
-  const record = await Record.findById(req.params.id);
+app.get('/New_UpdatedCrawl/:id', async (req, res) => {
+  const record = await New_UpdatedCrawl.findById(req.params.id);
   if (record) res.json(record);
   else res.status(404).json({ message: 'Record not found' });
 });
 
 // Update record
-app.put('/records/:id', async (req, res) => {
-  const record = await Record.findByIdAndUpdate(req.params.id, req.body, { new: true });
+app.put('/New_UpdatedCrawl/:id', async (req, res) => {
+  const record = await New_UpdatedCrawl.findByIdAndUpdate(req.params.id, req.body, { new: true });
   if (record) res.json(record);
   else res.status(404).json({ message: 'Record not found' });
 });
 
 // Delete record
-app.delete('/records/:id', async (req, res) => {
-  await Record.findByIdAndDelete(req.params.id);
+app.delete('/New_UpdatedCrawl/:id', async (req, res) => {
+  await New_UpdatedCrawl.findByIdAndDelete(req.params.id);
   res.json({ message: 'Deleted' });
 });
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Mock API with MongoDB (no schema) is running. Use /records endpoint.');
-});
-
-// Health check route (add this 👇)
+// Health check
 app.get('/health', (req, res) => {
   res.status(200).send('OK');
 });
-
 
 // Start server
 app.listen(3000, () => {
